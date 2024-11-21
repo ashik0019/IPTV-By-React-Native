@@ -1,4 +1,4 @@
-package com.designlab
+package com.techaliens.alienstv
 
 import android.app.Application
 import com.facebook.react.PackageList
