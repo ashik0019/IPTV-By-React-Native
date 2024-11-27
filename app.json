@@ -1,4 +1,7 @@
 {
   "name": "DesignLab",
-  "displayName": "DesignLab"
+  "displayName": "DesignLab",
+  "react-native-google-mobile-ads": {
+    "android_app_id": "ca-app-pub-8474570703108117~5632743891"
+  }
 }

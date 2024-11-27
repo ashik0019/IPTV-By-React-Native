@@ -12,7 +12,9 @@ import {
 import Video from 'react-native-video';
 import Orientation from 'react-native-orientation-locker';
 import Header from '../components/Header';
+import { AdEventType, BannerAd, BannerAdSize, InterstitialAd, RewardedAd, RewardedAdEventType, TestIds, useForeground } from 'react-native-google-mobile-ads';
 
+const adUnitId = __DEV__ ? TestIds.ADAPTIVE_BANNER : 'ca-app-pub-8474570703108117/8154863827';
 const { width, height } = Dimensions.get('window');
 
 const TVDetailsScreen = ({ route }) => {
@@ -23,6 +25,8 @@ const TVDetailsScreen = ({ route }) => {
     const [isPlaying, setIsPlaying] = useState(true);
     const fadeAnim = useRef(new Animated.Value(1)).current; // Animation for overlay
     const overlayTimer = useRef(null); // Timer reference for hiding overlay
+    const bannerRef = useRef(null);
+
 
     if (!data) {
         Alert.alert('Error', 'Required data is missing.');
@@ -64,7 +68,7 @@ const TVDetailsScreen = ({ route }) => {
         }
         overlayTimer.current = setTimeout(() => {
             hideOverlay();
-        }, 20000); // 20 seconds
+        }, 2500); // 20 seconds
     };
 
     // Hide Overlay
@@ -101,6 +105,13 @@ const TVDetailsScreen = ({ route }) => {
 
             {/* Header */}
             {!isFullScreen && <Header title="Aliens IPTV" showBackButton={true} />}
+            {!isFullScreen && <BannerAd ref={bannerRef}
+                unitId={adUnitId}
+                size={BannerAdSize.ANCHORED_ADAPTIVE_BANNER}
+                requestOptions={{
+                    requestNonPersonalizedAdsOnly: true
+                }}
+            />}
 
             {/* Title */}
             {!isFullScreen && <Text style={styles.title}>{data?.name}</Text>}
@@ -125,6 +136,9 @@ const TVDetailsScreen = ({ route }) => {
                         controls={false} // Custom controls
                         resizeMode="contain"
                         onError={handleVideoError}
+                        controlsStyles={{
+                            liveLabel: "LIVE"
+                        }}
                     />
                     {/* Custom Overlay */}
                     {isOverlayVisible && (
